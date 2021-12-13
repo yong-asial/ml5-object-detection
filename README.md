@@ -2,6 +2,8 @@
 
 If you are currently looking for an easy way to develop an object detection application using javascript, you are then coming to the right place. In this article, we will walk you step by step on how to build a simple yet elegant application that could detect 80 different classes of objects using just javascript.
 
+[Read more](https://medium.com/the-web-tub/object-detection-with-javascript-the-easy-way-74fbe98741cf)
+
 ## ml5.js
 ml5.js is the machine learning library in your web browser. It is built on top of tensorflow.js in which all the heavy-lifting or low-level tasks regarding machine learning are done in tensorflow.js. It is made for those who have no or little knowledge about machine learning.
 
