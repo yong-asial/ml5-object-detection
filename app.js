@@ -67,7 +67,7 @@ function drawResult(object) {
 // draw bounding box around the detected object
 function drawBoundingBox(object) {
   // Sets the color used to draw lines.
-  stroke('green');
+  stroke('red');
   // width of the stroke
   strokeWeight(4);
   // Disables filling geometry
