@@ -1,21 +1,14 @@
-  // declare global variable
+    // declare global variable
     let video = null; // video element
     let detector = null; // detector object
     let detections = []; // store detection result
     let videoVisibility = true;
     let detecting = false;
-    let yourName = ""; // Your entered name
-    let yourPersonId = -1; // Person ID associated with your name
 
     // global HTML element
     const toggleVideoEl = document.getElementById('toggleVideoEl');
     const toggleDetectingEl = document.getElementById('toggleDetectingEl');
     const coordsDisplay = document.getElementById('coordsDisplay'); // Added to access the coords display element
-    const nameInput = document.getElementById('nameInput'); // Added to access the name input field
-
-    nameInput.addEventListener('input', () => {
-      yourName = nameInput.value.trim();
-    });
 
     // set cursor to wait until video element is loaded
     document.body.style.cursor = 'wait';
@@ -57,15 +50,14 @@
     }
 
     /*
-    Example of a detect object
+    Exaple of an detect object
     {
-      "label": "person",
-      "confidence": 0.8013999462127686,
-      "x": 7.126655578613281,
-      "y": 148.3782720565796,
-      "width": 617.7880859375,
-      "height": 331.60210132598877,
-      "id": 0 // Unique ID for each person
+        "label": "person",
+        "confidence": 0.8013999462127686,
+        "x": 7.126655578613281,
+        "y": 148.3782720565796,
+        "width": 617.7880859375,
+        "height": 331.60210132598877,
     }
     */
     function drawResult(object) {
@@ -73,17 +65,8 @@
         drawBoundingBox(object);
         drawLabel(object);
 
-        // If yourPersonId is not set yet, check if your name is associated with the current person
-        if (yourPersonId === -1 && yourName.toLowerCase() === "person " + object.id) {
-          yourPersonId = object.id;
-        }
-
-        // Display the coordinates and name if it's you
-        if (object.id === yourPersonId) {
-          coordsDisplay.innerText = `Coordinates: (${object.x}, ${object.y})\nName: ${yourName}`;
-        } else {
-          coordsDisplay.innerText = `Coordinates: (${object.x}, ${object.y})`;
-        }
+        // Display the coordinates
+        coordsDisplay.innerText = `Coordinates: (${object.x}, ${object.y})`;
       }
     }
 
@@ -93,14 +76,17 @@
       stroke('red');
       // width of the stroke
       strokeWeight(4);
+      // Disables filling geometry
+      noFill();
       // draw a rectangle
       // x and y are the coordinates of the upper-left corner, followed by width and height
-      noFill();
       rect(object.x, object.y, object.width, object.height);
     }
 
     // draw label of the detected object (inside the box)
     function drawLabel(object) {
+      // Disables drawing the stroke
+      noStroke();
       // sets the color used to fill shapes
       fill('white');
       // set font size
@@ -117,7 +103,7 @@
       detections = results;
       // keep detecting object
       if (detecting) {
-        detect();
+        detect(); 
       }
     }
 
