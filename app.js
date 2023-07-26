@@ -1,13 +1,21 @@
+ // declare global variable
     let video = null; // video element
     let detector = null; // detector object
     let detections = []; // store detection result
     let videoVisibility = true;
     let detecting = false;
+    let yourName = ""; // Your entered name
+    let yourPersonId = -1; // Person ID associated with your name
 
     // global HTML element
     const toggleVideoEl = document.getElementById('toggleVideoEl');
     const toggleDetectingEl = document.getElementById('toggleDetectingEl');
     const coordsDisplay = document.getElementById('coordsDisplay'); // Added to access the coords display element
+    const nameInput = document.getElementById('nameInput'); // Added to access the name input field
+
+    nameInput.addEventListener('input', () => {
+      yourName = nameInput.value.trim();
+    });
 
     // set cursor to wait until video element is loaded
     document.body.style.cursor = 'wait';
@@ -49,14 +57,15 @@
     }
 
     /*
-    Exaple of an detect object
+    Example of a detect object
     {
-        "label": "person",
-        "confidence": 0.8013999462127686,
-        "x": 7.126655578613281,
-        "y": 148.3782720565796,
-        "width": 617.7880859375,
-        "height": 331.60210132598877,
+      "label": "person",
+      "confidence": 0.8013999462127686,
+      "x": 7.126655578613281,
+      "y": 148.3782720565796,
+      "width": 617.7880859375,
+      "height": 331.60210132598877,
+      "id": 0 // Unique ID for each person
     }
     */
     function drawResult(object) {
@@ -64,8 +73,17 @@
         drawBoundingBox(object);
         drawLabel(object);
 
-        // Display the coordinates
-        coordsDisplay.innerText = `Coordinates: (${object.x}, ${object.y})`;
+        // If yourPersonId is not set yet, check if your name is associated with the current person
+        if (yourPersonId === -1 && yourName.toLowerCase() === "person " + object.id) {
+          yourPersonId = object.id;
+        }
+
+        // Display the coordinates and name if it's you
+        if (object.id === yourPersonId) {
+          coordsDisplay.innerText = `Coordinates: (${object.x}, ${object.y})\nName: ${yourName}`;
+        } else {
+          coordsDisplay.innerText = `Coordinates: (${object.x}, ${object.y})`;
+        }
 
         // Calculate zoom level based on "person" size
         const zoom = 1.5; // Adjust this value to control the zoom level
@@ -74,9 +92,10 @@
         resizeCanvas(canvasWidth, canvasHeight);
         translate(-object.x * (zoom - 1), -object.y * (zoom - 1));
       } else {
-        // Reset the canvas size and translation when no "person" is detected
+        // Reset the canvas size, translation, and yourPersonId when no "person" is detected
         resizeCanvas(640, 480);
         translate(0, 0);
+        yourPersonId = -1;
       }
     }
 
@@ -113,7 +132,7 @@
       detections = results;
       // keep detecting object
       if (detecting) {
-        detect(); 
+        detect();
       }
     }
 
