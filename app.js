@@ -1,4 +1,4 @@
- // declare global variable
+  // declare global variable
     let video = null; // video element
     let detector = null; // detector object
     let detections = []; // store detection result
@@ -84,18 +84,6 @@
         } else {
           coordsDisplay.innerText = `Coordinates: (${object.x}, ${object.y})`;
         }
-
-        // Calculate zoom level based on "person" size
-        const zoom = 1.5; // Adjust this value to control the zoom level
-        const canvasWidth = object.width * zoom;
-        const canvasHeight = object.height * zoom;
-        resizeCanvas(canvasWidth, canvasHeight);
-        translate(-object.x * (zoom - 1), -object.y * (zoom - 1));
-      } else {
-        // Reset the canvas size, translation, and yourPersonId when no "person" is detected
-        resizeCanvas(640, 480);
-        translate(0, 0);
-        yourPersonId = -1;
       }
     }
 
@@ -105,17 +93,14 @@
       stroke('red');
       // width of the stroke
       strokeWeight(4);
-      // Disables filling geometry
-      noFill();
       // draw a rectangle
       // x and y are the coordinates of the upper-left corner, followed by width and height
+      noFill();
       rect(object.x, object.y, object.width, object.height);
     }
 
     // draw label of the detected object (inside the box)
     function drawLabel(object) {
-      // Disables drawing the stroke
-      noStroke();
       // sets the color used to fill shapes
       fill('white');
       // set font size
