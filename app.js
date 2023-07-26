@@ -1,4 +1,3 @@
- // declare global variable
     let video = null; // video element
     let detector = null; // detector object
     let detections = []; // store detection result
@@ -67,6 +66,17 @@
 
         // Display the coordinates
         coordsDisplay.innerText = `Coordinates: (${object.x}, ${object.y})`;
+
+        // Calculate zoom level based on "person" size
+        const zoom = 1.5; // Adjust this value to control the zoom level
+        const canvasWidth = object.width * zoom;
+        const canvasHeight = object.height * zoom;
+        resizeCanvas(canvasWidth, canvasHeight);
+        translate(-object.x * (zoom - 1), -object.y * (zoom - 1));
+      } else {
+        // Reset the canvas size and translation when no "person" is detected
+        resizeCanvas(640, 480);
+        translate(0, 0);
       }
     }
 
